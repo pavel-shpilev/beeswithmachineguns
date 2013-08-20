@@ -105,6 +105,9 @@ commands:
     attack_group.add_option('-e', '--csv', metavar="FILENAME", nargs=1,
                         action='store', dest='csv_filename', type='string', default='',
                         help="Store the distribution of results in a csv file for all completed bees (default: '').")
+    attack_group.add_option('-a', '--keep-alive', metavar="KEEP_ALIVE",
+                        action='store_true', dest='keep_alive', default=False,
+                        help="Enable the HTTP KeepAlive feature, i.e., perform multiple requests within one HTTP session.")
 
     parser.add_option_group(attack_group)
 
@@ -139,6 +142,7 @@ commands:
             post_file=options.post_file,
             mime_type=options.mime_type,
             csv_filename=options.csv_filename,
+            keep_alive=options.keep_alive
         )
 
         bees.attack(options.url, options.number, options.concurrent, **additional_options)

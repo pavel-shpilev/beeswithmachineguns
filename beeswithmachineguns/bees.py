@@ -229,6 +229,8 @@ def _attack(params):
             pem_file_path=_get_pem_path(params['key_name'])
             os.system("scp -q -o 'StrictHostKeyChecking=no' -i %s %s %s@%s:/tmp/honeycomb" % (pem_file_path, params['post_file'], params['username'], params['instance_name']))
             options += ' -k -T "%(mime_type)s; charset=UTF-8" -p /tmp/honeycomb' % params
+        elif params.get('keep_alive'):
+            options += ' -k'
 
         params['options'] = options
         benchmark_command = 'ab -r -n %(num_requests)s -c %(concurrent_requests)s -C "sessionid=NotARealSessionID" %(options)s "%(url)s"' % params
@@ -418,6 +420,7 @@ def attack(url, n, c, **options):
             'headers': headers,
             'post_file': options.get('post_file'),
             'mime_type': options.get('mime_type', ''),
+            'keep_alive': options.get('keep_alive', False)
         })
 
     print 'Stinging URL so it will be cached for the attack.'
